@@ -1,0 +1,35 @@
+TO DO LIST:  Fully operational DEX.
+
+- TradingView Integration: Implement a TradingView chart for real-time token price and market data visualization. I suggest connecting it to Birdeye API which I have. 
+
+- Token Swap Functionality: Develop the core swap mechanism, allowing users to exchange one token for another seamlessly. 
+
+- Yield Farming: Implement yield farming protocols, enabling users to stake tokens and earn rewards. 
+
+- Perpetual Futures (Perps) Trading: Build a mechanism for trading perpetual futures contracts, allowing users to leverage their positions. 
+
+- Liquidity Pool Management: Develop features for users to create, manage, and participate in liquidity pools. 
+
+-Liquidity Pool Management: Develop features for users to create, manage, and participate in liquidity pools. 
+
+-User Authentication and Wallet Integration: Integrate wallet authentication (e.g., Phantom, Sollet) for users to securely connect their wallets. 
+
+-Smart Contract Development: Write and deploy the smart contracts that power swaps, yield farming, and perps trading. 
+
+-API Integration: 
+I. External Price Feeds: Integrate with external APIs for price feeds and token data. 
+II. Liquidity Aggregation: Integrate with other APIs for liquidity aggregation, ensuring access to a broad range of liquidity pools. 
+
+-Frontend Development: Design and build a responsive user interface (UI) that is intuitive and easy to use. 
+
+-Backend Development: Set up the backend infrastructure to handle transactions, data processing, and interactions with the blockchain. -Testing and Optimization: Perform comprehensive testing (unit, integration, and end-to-end) and optimize the platform for performance. 
+
+-Analytics and Reporting: Implement analytics tools for tracking user activity, transaction volumes, and other key metrics. 
+
+-Documentation: Create detailed documentation for users, including guides on how to use the platform, participate in yield farming, and trade perps. 
+
+-Launch and Deployment: Prepare the platform for deployment on Solana Mainnet, including final testing, bug fixing, and setting up necessary infrastructure. 
+
+
+I have most of the project completed already. I will send you my github repo and you can finish the project there. 
+This should be a fully functional DEX similar to things like Jup.ag (Jupiter DEX)
