@@ -7,7 +7,11 @@ const News = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get('https://api.example.com/news'); // Replace with actual news API
+        const response = await axios.get('https://api.example.com/news',{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        }); // Replace with actual news API
         setNews(response.data.articles);
       } catch (error) {
         console.error('Error fetching news:', error);

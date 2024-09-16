@@ -129,7 +129,11 @@ const TokenSwap = () => {
   useEffect(() => {
     const fetchTokens = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/tokens`);
+        const response = await axios.get(`${API_BASE_URL}/api/tokens`,{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        });
         console.log('Tokens API response:', response.data);
 
         // Check if the response is an array or object
@@ -153,7 +157,11 @@ const TokenSwap = () => {
     setLoading(true);
     setError(null);
     try {
-      const jupiterResponse = await axios.get(`https://price.jup.ag/v6/price?ids=${tokenIds.join(',')}`);
+      const jupiterResponse = await axios.get(`https://price.jup.ag/v6/price?ids=${tokenIds.join(',')},{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        }`);
       console.log('Jupiter Response:', jupiterResponse.data);
 
       const jupiterPrices = Object.keys(jupiterResponse.data.data).reduce((acc, key) => {

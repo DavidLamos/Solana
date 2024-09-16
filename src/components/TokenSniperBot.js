@@ -20,7 +20,11 @@ const TokenSniperBot = () => {
   useEffect(() => {
     const fetchNewTokens = async () => {
       try {
-        const response = await axios.get('https://api.birdeye.so/new-tokens'); // Replace with the actual BirdEye API endpoint
+        const response = await axios.get('https://api.birdeye.so/new-tokens',{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        }); // Replace with the actual BirdEye API endpoint
         setNewTokens(response.data);
       } catch (error) {
         console.error('Error fetching new tokens:', error);

@@ -21,7 +21,11 @@ const PerpsOrder = () => {
   useEffect(() => {
     const fetchTokens = async () => {
       try {
-        const response = await axios.get('https://api.cryptosion.io/api/tokens');
+        const response = await axios.get('https://api.cryptosion.io/api/tokens',{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        });
         setTokens(response.data);
       } catch (error) {
         console.error('Error fetching tokens:', error);
@@ -35,7 +39,11 @@ const PerpsOrder = () => {
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const response = await axios.get(`https://price.jup.ag/v6/price?ids=${fromToken},${toToken}`);
+        const response = await axios.get(`https://price.jup.ag/v6/price?ids=${fromToken},${toToken}`,{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        });
         const pricesData = response.data.data;
 
         if (pricesData[fromToken].price && !price) {

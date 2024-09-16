@@ -14,6 +14,7 @@ export const fetchChartData = async (symbol) => {
     const headers = {
       'X-API-KEY': apiKey,
       'x-chain': 'solana',
+      'ngrok-skip-browser-warning': 'true' 
     };
 
     const tokenCreationTimestamp = Math.floor(new Date('2021-06-01T00:00:00Z').getTime() / 1000); // Example: June 1, 2021
@@ -21,7 +22,9 @@ export const fetchChartData = async (symbol) => {
 
     const response = await axios.get(
       `https://public-api.birdeye.so/defi/history_price?address=${token.address}&address_type=token&type=15m&time_from=${tokenCreationTimestamp}&time_to=${currentTimestamp}`, 
-      { headers }
+      {
+        headers
+      }
     );
 
     const data = response.data.data;

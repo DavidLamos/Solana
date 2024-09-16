@@ -23,7 +23,11 @@ const LimitOrder = () => {
   useEffect(() => {
     const fetchTokens = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tokens`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/tokens`,{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        });
         setTokens(response.data);
       } catch (error) {
         console.error('Error fetching tokens:', error);
@@ -37,7 +41,11 @@ const LimitOrder = () => {
   useEffect(() => {
     const fetchPrices = async () => {
       try {
-        const response = await axios.get(`https://price.jup.ag/v6/price?ids=${fromToken},${toToken}`);
+        const response = await axios.get(`https://price.jup.ag/v6/price?ids=${fromToken},${toToken},{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        }`);
         const pricesData = response.data?.data;
 
         console.log('API response:', pricesData); // Debugging to see the structure of the response
@@ -100,7 +108,11 @@ const LimitOrder = () => {
 
       // Fetch the best swap route from Jupiter
       const quoteResponse = await axios.get(
-        `https://quote-api.jup.ag/v6/quote?inputMint=${fromToken}&outputMint=${toToken}&amount=${amount}&slippageBps=50`
+        `https://quote-api.jup.ag/v6/quote?inputMint=${fromToken}&outputMint=${toToken}&amount=${amount}&slippageBps=50`,{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        }
       );
       if (!quoteResponse.data || quoteResponse.data.length === 0) {
         setOrderStatus('No available route found.');

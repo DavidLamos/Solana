@@ -19,7 +19,11 @@ const DCA = () => {
   useEffect(() => {
     const fetchTokens = async () => {
       try {
-        const response = await axios.get('https://api.cryptosion.io/api/tokens');
+        const response = await axios.get('https://api.cryptosion.io/api/tokens',{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        });
         setTokens(response.data);
       } catch (error) {
         console.error('Error fetching tokens:', error);
@@ -29,7 +33,11 @@ const DCA = () => {
 
     const fetchSolToUsdcRate = async () => {
       try {
-        const response = await axios.get(`https://price.jup.ag/v6/price?ids=${fromToken}`);
+        const response = await axios.get(`https://price.jup.ag/v6/price?ids=${fromToken}`,{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        });
         setSolToUsdc(response.data.data[fromToken].price);
       } catch (error) {
         console.error('Error fetching SOL to USDC rate:', error);

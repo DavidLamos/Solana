@@ -5,7 +5,8 @@ export const fetchTokenMetadata = async () => {
     const apiKey = '7707fff5284b4debbdc6487845ea9218';
     const headers = {
       'X-API-KEY': apiKey,
-      'x-chain': 'solana'
+      'x-chain': 'solana',
+      'ngrok-skip-browser-warning': 'true' // or any value you prefer
     };
 
     const response = await axios.get('https://public-api.birdeye.so/defi/tokenlist', { headers });

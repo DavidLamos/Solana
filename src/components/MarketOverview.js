@@ -7,7 +7,11 @@ const MarketOverview = () => {
   useEffect(() => {
     const fetchMarkets = async () => {
       try {
-        const response = await axios.get('https://api.exchange.com/markets');
+        const response = await axios.get('https://api.exchange.com/markets',{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        });
         setMarkets(response.data);
       } catch (error) {
         console.error('Error fetching markets:', error);

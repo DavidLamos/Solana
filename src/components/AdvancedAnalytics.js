@@ -7,7 +7,11 @@ const AdvancedAnalytics = () => {
   useEffect(() => {
     const fetchAnalyticsData = async () => {
       try {
-        const response = await axios.get('https://api.yourdex.com/analytics'); // Replace with your API endpoint
+        const response = await axios.get('https://api.yourdex.com/analytics',{
+          headers: {
+            'ngrok-skip-browser-warning': 'true' // or any value you prefer
+          }
+        }); // Replace with your API endpoint
         setAnalyticsData(response.data);
       } catch (error) {
         console.error('Error fetching analytics data:', error);
