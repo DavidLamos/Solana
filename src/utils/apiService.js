@@ -1,13 +1,13 @@
 // src/utils/apiService.js
 
 const API_URL =  'https://rational-killdeer-thoroughly.ngrok-free.app';
-
+ 
 export const fetchData = async (endpoint) => {
   try {
     const response = await fetch(`${API_URL}/${endpoint}`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
-      ////
+      console.log("here")
       
     }
     return response.json();
