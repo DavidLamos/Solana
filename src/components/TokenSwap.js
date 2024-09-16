@@ -124,7 +124,7 @@ const TokenSwap = () => {
   const [slippage, setSlippage] = useState(0.5); // default slippage tolerance
   const [isSlippageModalOpen, setIsSlippageModalOpen] = useState(false);
 
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://rational-killdeer-thoroughly.ngrok-free.app';
+  const API_BASE_URL = 'https://rational-killdeer-thoroughly.ngrok-free.app';
 
   useEffect(() => {
     const fetchTokens = async () => {
