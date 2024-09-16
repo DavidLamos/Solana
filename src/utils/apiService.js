@@ -1,6 +1,6 @@
 // src/utils/apiService.js
 
-const API_URL = process.env.REACT_APP_API_URL || 'https://rational-killdeer-thoroughly.ngrok-free.app';
+const API_URL =  'https://rational-killdeer-thoroughly.ngrok-free.app';
 
 export const fetchData = async (endpoint) => {
   try {
