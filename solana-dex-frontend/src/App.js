@@ -37,6 +37,8 @@ const LimitOrder = lazy(() => import('./components/LimitOrder'));
 const DCA = lazy(() => import('./components/DCA'));
 const Perps = lazy(() => import('./components/Perps'));
 const CustomizableDashboard = lazy(() => import('./components/CustomizableDashboard'));
+// const SwapComponent = lazy(() => import('./components/Swap'));
+const Mint = lazy(() => import ('./components/Mint'));
 const TokenSwap = lazy(() => import('./components/TokenSwap'));
 const TokenSniper = lazy(() => import('./pages/TokenSniper')); // Corrected import path
 const GamingPage = lazy(() => import('./components/GamingPage')); // Import the new GamingPage component
@@ -58,6 +60,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Navigate to="/swap" />} /> {/* Redirect Home to Swap */}
                   <Route path="/swap" element={<TokenSwap />} />
+                  <Route path="/mint" element={<Mint />} />
                   <Route path="/trade" element={<Trade />} />
                   <Route path="/limit-order" element={<LimitOrder />} />
                   <Route path="/dca" element={<DCA />} />

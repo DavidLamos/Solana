@@ -7,9 +7,109 @@ import SwapButton from './SwapButton';
 import Slippage from './Slippage';
 import PriceDisplay from './PriceDisplay';
 import SlippageModal from './SlippageModal';
+import fetch from 'cross-fetch';
+import { Connection, Keypair, VersionedTransaction } from '@solana/web3.js';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { TOKEN_PROGRAM_ID, getAccount } from '@solana/spl-token';
+import { PublicKey } from '@solana/web3.js';
 import '../styles/token-swap.css';
-
+import OpenLinkButton from './OpenLink';
 const TokenSwap = () => {
+  const [isLink, setLink] = useState(false);
+  const [decimals, setDecimals] = useState(null);
+  const [swaplamports, setLamports] = useState(0);
+  console.log("this is swapllamports", swaplamports)
+  const fetchTokenDecimals = async (address) => {
+    try {
+      const response = await fetch('https://mainnet.helius-rpc.com/?api-key=a5325979-a571-4de7-bcfe-1a6dfe8dc0c4', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          id: 1,
+          method: 'getTokenSupply',
+          params: [address],
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.result && data.result.value && data.result.value.decimals !== undefined) {
+        setDecimals(data.result.value.decimals);
+        setLamports((10 ** data.result.value.decimals) * fromAmount);
+      } else {
+        console.error('Error fetching token decimals:', data);
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  };
+  
+  const [txid, setTxid] = useState('2QXp9xgXb8s4wKdquiEdpLo3epp6ZuRsdHFzqycP56jkAa9H8kd8zaRdaE9b1TcAuJfieaTT4iTr7DLWZbjaeB9z');
+  const { publicKey, signTransaction } = useWallet();
+  const handleSwap1 = async () => {
+    console.log(tokens.includes('SOL'),"tokens")
+    const fromTokenItem = tokens.find(item=>item.symbol === fromToken)
+    const toTokenItem = tokens.find(item=>item.symbol === toToken)
+    fetchTokenDecimals(fromTokenItem.address);
+    console.log(fromTokenItem,"ei",toTokenItem, swaplamports)
+    if (!publicKey) {
+        console.error('Wallet not connected');
+        return;
+    }
+    console.log('wallet address:', publicKey.toString());
+    try {
+    const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=a5325979-a571-4de7-bcfe-1a6dfe8dc0c4',"confirmed");
+    const quoteResponse = await fetch(`https://quote-api.jup.ag/v6/quote?inputMint=${fromTokenItem.address}&outputMint=${toTokenItem.address}&amount=${swaplamports}&slippageBps=50`)
+    .then(res => res.json());
+    console.log('1');
+    const { swapTransaction } = await fetch('https://quote-api.jup.ag/v6/swap', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        quoteResponse,
+        userPublicKey: publicKey.toString(),
+        wrapAndUnwrapSol: true,
+    })
+    }).then(res => res.json());
+    console.log('2');
+    const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
+    let transaction = VersionedTransaction.deserialize(swapTransactionBuf);
+
+    //   if (signTransaction) {
+    const vTxn = await signTransaction(transaction);
+
+    const simulationResult = await connection.simulateTransaction(vTxn, {
+    commitment: "processed",
+    });
+
+    if (simulationResult.value.err) {
+    console.error(
+        "* Simulation error",
+        simulationResult.value.err,
+        simulationResult
+    );
+    } else {
+    console.log("- Simulation success for transaction.");
+    }
+    const rawTransaction = vTxn.serialize();
+    const txid = await connection.sendRawTransaction(rawTransaction, {
+    skipPreflight: true,
+    maxRetries: 2
+    });
+    await connection.confirmTransaction(txid);
+        setTxid(txid);
+        setLink(true)
+        console.log(`https://solscan.io/tx/${txid}`);
+        window.open(`https://solscan.io/tx/${txid}`, '_blank', 'noopener,noreferrer');
+
+    } catch (error) {
+      console.error('Swap failed:', error);
+    }
+  };
+
   const [tokens, setTokens] = useState([]);
   const [fromToken, setFromToken] = useState('SOL');
   const [toToken, setToToken] = useState('USDC');
@@ -107,6 +207,7 @@ const TokenSwap = () => {
   };
 
   const handleSwap = async () => {
+    handleSwap1()
     setTransactionStatus('Initiating transaction...');
     try {
       const res = await axios.post(`${API_BASE_URL}/api/swap`, {
@@ -118,7 +219,7 @@ const TokenSwap = () => {
       });
 
       console.log("swap - ", res);
-      setTransactionStatus('Transaction successful!');
+      setTransactionStatus('Transaction successful1!');
     } catch (error) {
       console.error('Error during transaction:', error);
       setTransactionStatus('Transaction failed. Please try again.');
@@ -136,6 +237,10 @@ const TokenSwap = () => {
       <div className="header">
         <FaSync className="refresh-icon" onClick={handleRefresh} />
         <Slippage slippage={slippage} setIsSlippageModalOpen={setIsSlippageModalOpen} />
+        <OpenLinkButton url={`https://solscan.io/tx/${txid}`} text= "Open Transaction" 
+          setLink={setLink}
+          open={isLink}
+        />
       </div>
       <div className="token-swap">
         {loading && <p>Loading...</p>}
